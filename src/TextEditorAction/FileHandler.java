@@ -4,13 +4,12 @@ package TextEditorAction;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
-import java.io.FilenameFilter;
 
-public class FileReader {
+public class FileHandler {
     private String filePath;
     private String fileName;
 
-    public String FileOpener(){
+    public static String FileOpener(){
         JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -30,7 +29,7 @@ public class FileReader {
         }
     }
 
-    private String FileSave(){
+    public static String FileSave(){
         JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setMultiSelectionEnabled(false);
