@@ -1,4 +1,3 @@
-import TextEditorButtons.ExitButton;
 import javax.swing.*;
 
 public class TextEditorWindow
