@@ -55,18 +55,16 @@ public class TextEditorWindow {
         // Setting the Menu Bar
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
+        fileMenu.setMnemonic(KeyEvent.VK_F);
         JMenu editMenu = new JMenu("Edit");
+        editMenu.setMnemonic(KeyEvent.VK_E);
 
         // Open the .txt file
         JMenuItem openMenuItem = new JMenuItem("Open");
         openMenuItem.setMnemonic(KeyEvent.VK_O);
         openMenuItem.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                openFile();
-
-
-            }
+            public void actionPerformed(ActionEvent e) {openFile();}
         });
 
         // Save the .txt file
@@ -77,13 +75,6 @@ public class TextEditorWindow {
             public void actionPerformed(ActionEvent e) {saveFile();}
         });
 
-        JMenuItem replaceMenuItem = new JMenuItem("Replace");
-        replaceMenuItem.setMnemonic(KeyEvent.VK_F);
-        replaceMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {searchAndDestroy();}
-        });
-
         // Exits the application
         JMenuItem exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.setMnemonic(KeyEvent.VK_X);
@@ -91,6 +82,17 @@ public class TextEditorWindow {
             @Override
             public void actionPerformed(ActionEvent e) {closeFile();}
         });
+
+        JMenuItem replaceMenuItem = new JMenuItem("Replace");
+        replaceMenuItem.setMnemonic(KeyEvent.VK_R);
+        replaceMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {searchAndDestroy();}
+        });
+
+
+
+
         // Setting up the text area
         textArea = new JTextArea();
         textArea.setEditable(true);
@@ -117,6 +119,13 @@ public class TextEditorWindow {
             }
         });
 
+        JButton replaceButton = new JButton("Replace");
+        replaceButton.setMnemonic(KeyEvent.VK_R);
+        replaceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {searchAndDestroy();}
+        });
+
         JButton exitButton = new JButton("Exit");
         exitButton.setMnemonic(KeyEvent.VK_X);
         exitButton.addActionListener(new ActionListener() {
@@ -129,12 +138,22 @@ public class TextEditorWindow {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(openButton);
         buttonPanel.add(saveButton);
+        buttonPanel.add(replaceButton);
         buttonPanel.add(exitButton);
 
         // Tool Tips
-        exitMenuItem.setToolTipText("Exit the application (ALT-X)");
-        saveMenuItem.setToolTipText("Save the file (ALT-S)");
-        openMenuItem.setToolTipText("Open the file (ALT-O)");
+        fileMenu.setToolTipText("Open the File Menu (ALT+M)");
+        exitMenuItem.setToolTipText("Exit the application (ALT+X)");
+        saveMenuItem.setToolTipText("Save the file (ALT+S)");
+        openMenuItem.setToolTipText("Open the file (ALT+O)");
+
+        editMenu.setToolTipText("Replace the file (ALT+R)");
+        replaceMenuItem.setToolTipText("Replace the file (ALT+R)");
+
+        exitButton.setToolTipText("Exit the application (ALT+X)");
+        saveButton.setToolTipText("Save the file (ALT+S)");
+        openButton.setToolTipText("Open the file (ALT+O)");
+
 
         // Adding components to the window frame
         menuBar.add(fileMenu);
@@ -205,6 +224,7 @@ public class TextEditorWindow {
             try{
                 if (!selectedFile.getName().endsWith(".txt")){
                     selectedFile = new File(selectedFile.getAbsolutePath() + ".txt");
+                    saveFileNameLabel.setText(selectedFile.getAbsolutePath());
                 }
 
                 BufferedWriter br = new BufferedWriter(new FileWriter(selectedFile));
@@ -230,12 +250,16 @@ public class TextEditorWindow {
         }
 
         String textToSearch = textArea.getText();
-        if (textToSearch.contains(searchTxt)){
-            textToSearch = textToSearch.replaceAll(searchTxt, newTxt);
-            textArea.setText(textToSearch);
-        }
-        else{
-            JOptionPane.showMessageDialog(window, "Search text not found");
+        if (textToSearch == null || textToSearch.isEmpty()){
+            JOptionPane.showMessageDialog(window, "Text Box is empty");
+        } else {
+            if (textToSearch.contains(searchTxt)) {
+                textToSearch = textToSearch.replaceAll(searchTxt, newTxt);
+                textArea.setText(textToSearch);
+            }
+            else{
+                JOptionPane.showMessageDialog(window, "Search text not found");
+            }
         }
     }
 
